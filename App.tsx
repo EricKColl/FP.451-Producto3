@@ -28,6 +28,12 @@ const enlaces: LinkingOptions<ParametrosNavegacion> = {
   config: { screens: { Inicio: '', Detalle: 'jugador/:id', Multimedia: 'jugador/:id/video' } },
 };
 
+// Título de la pestaña en la versión web: «Kobe Bryant · EQUIPO BASKET» (en Inicio, solo la marca)
+const tituloPestana = (opciones?: { title?: string }, ruta?: { name: string }) => {
+  const titulo = opciones?.title ?? ruta?.name ?? '';
+  return titulo === 'EQUIPO BASKET' ? titulo : `${titulo} · EQUIPO BASKET`;
+};
+
 // Colores de React Navigation adaptados a «Holo Court» (fondo, cabecera, textos y bordes)
 const tema: Theme = {
   ...DarkTheme,
@@ -73,7 +79,7 @@ export default function App() {
       <NavigationContainer
         theme={tema}
         linking={enlaces}
-        documentTitle={{ formatter: (o, ruta) => `${o?.title ?? ruta?.name} · EQUIPO BASKET` }}
+        documentTitle={{ formatter: tituloPestana }}
       >
         <StatusBar style="light" />
         {/* Menú superior: el mismo estilo en las 3 ventanas. A la izquierda, la flecha de volver
