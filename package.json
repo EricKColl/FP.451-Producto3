@@ -35,7 +35,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "formato": "prettier --write \"App.tsx\" \"src/**/*.{ts,tsx}\"",
-    "comprobar": "tsc --noEmit && prettier --check \"App.tsx\" \"src/**/*.{ts,tsx}\""
+    "comprobar": "tsc --noEmit && prettier --check \"App.tsx\" \"src/**/*.{ts,tsx}\"",
+    "web:online": "expo start --web --port 8081"
   },
   "private": true
 }
