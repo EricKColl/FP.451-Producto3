@@ -66,12 +66,38 @@ El listado por bloques controla la presentación local: el servicio existente re
 | Borrado en tiempo real | Correcto, sin recargar | Jacobo confirmó que el jugador temporal desapareció |
 | Limpieza de los datos de prueba | Completada | Lectura final del servidor: 10 jugadores y documento temporal inexistente |
 | Integridad de los jugadores iniciales | Verificada | Fechas anteriores al alta temporal y comparación final de los datos con campos ordenados |
+| Carga, plantilla vacía y filtro sin coincidencias | Correctos en pruebas de lógica aisladas | Casos automatizados reproducibles en `tests/jacobo/inicio-estados.test.cjs` |
+| Error inicial y error de actualización con datos previos | Correctos en pruebas de lógica aisladas | Mensaje de error inicial y conservación de las tarjetas con aviso en una actualización fallida |
+| Filtro sobre toda la plantilla y reinicio del bloque | Correctos en pruebas de lógica aisladas | Datos sintéticos de 15 jugadores y cambio de posición tras ampliar el listado |
 
 Las pruebas manuales están respaldadas por las confirmaciones de Jacobo en el chat de desarrollo y por tres capturas de su iPhone 15 Pro Max, incorporadas el 19 de noviembre de 2026. Las imágenes muestran Inicio, el filtro Base y el final del listado. La generación de paquetes se ha comprobado para las tres plataformas; la ejecución en un teléfono real se ha realizado en iPhone.
 
+## Pruebas de lógica reproducibles
+
+Desde la raíz del proyecto:
+
+```bash
+node --test tests/jacobo/inicio-estados.test.cjs
+```
+
+Resultado registrado el 19 de noviembre de 2026: **6 pruebas correctas, 0 fallos**.
+
+El archivo ejecuta el código TSX de `InicioScreen` y `EstadoPantalla` en un entorno aislado. Simula las respuestas de `useJugadores()`, el estado local y las primitivas de React Native, y comprueba los elementos, mensajes y datos que devuelve la lógica del componente. Utiliza Node y TypeScript, ya disponibles en el proyecto, y no realiza conexiones ni escrituras en Firebase.
+
+Casos comprobados:
+
+1. Durante la carga se muestra el mensaje de conexión, sin confundirlo con una plantilla vacía.
+2. Una lectura sin jugadores muestra su mensaje, sin contador ni acción innecesaria.
+3. Un filtro sin coincidencias ofrece «Ver toda la plantilla» y permite quitar el filtro.
+4. Un error inicial muestra el aviso de lectura, en lugar de afirmar que no hay jugadores.
+5. Un error posterior mantiene las tarjetas recibidas y muestra una advertencia.
+6. El filtro se aplica a toda la plantilla, incluidos los jugadores posteriores al primer bloque, y reinicia el límite de seis.
+
+Estas pruebas verifican decisiones de la pantalla con dependencias simuladas. El montaje real de React, los gestos, la distribución visual, el servicio de Firebase y la detección de una desconexión física quedan fuera de su alcance. Las comprobaciones funcionales con datos reales y dispositivo se documentan por separado en la tabla anterior.
+
 ## Comprobaciones y entrega pendientes
 
-- Verificar específicamente los estados sin resultados, plantilla vacía y pérdida de conexión. Están implementados, pero no se registran aquí como pruebas manuales completadas.
+- Comprobar, durante las pruebas cruzadas del equipo, el aspecto nativo de los estados vacíos y la pérdida física de conexión. La lógica de respuesta a lecturas vacías y a errores simulados ya está comprobada; no se presenta como una prueba de desconexión real en el teléfono.
 - Revisar y probar la aplicación integrada cuando estén terminadas las pantallas de Marc y Carles.
 - Subir la rama, abrir la PR a `develop` y añadir el enlace en esta documentación.
 - Asociar la PR a la etiqueta `listado`, al Hito 2 y a la tarjeta P3.3 de Trello.
