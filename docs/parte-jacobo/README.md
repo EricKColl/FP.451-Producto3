@@ -56,9 +56,9 @@ El listado por bloques controla la presentación local: el servicio existente re
 | --- | --- | --- |
 | Tipos y formato | Correctos | Ejecución de `npm run comprobar` |
 | Exportación para web, iOS y Android | Correcta | `expo export --platform all` generó los tres paquetes |
-| Apertura en iPhone 15 Pro Max real | Correcta | Confirmación de Jacobo usando Expo Go |
-| Filtros Base, Pívot y Todos | Correctos | Confirmación manual de Jacobo en el iPhone |
-| Desplazamiento hasta el final | Correcto | Jacobo confirmó que aparecen los jugadores restantes |
+| Apertura en iPhone 15 Pro Max real | Correcta | Confirmación de Jacobo usando Expo Go y [captura de Inicio](capturas/inicio-iphone.jpg) |
+| Filtros Base, Pívot y Todos | Correctos | Confirmación manual de Jacobo; [captura de Base con 2 resultados](capturas/filtro-posicion-iphone.jpg) |
+| Desplazamiento hasta el final | Correcto | Confirmación de Jacobo y [captura con 10 de 10 jugadores](capturas/final-listado-iphone.jpg) |
 | Tarjeta → Detalle y flecha atrás | Correctos | Confirmación manual de Jacobo |
 | Botón ▶ → Multimedia e Inicio | Correctos | Confirmación manual; el vídeo definitivo corresponde a Carles |
 | Alta en tiempo real | Correcta, sin recargar | Jacobo vio aparecer «Prueba Jacobo P3»; Firebase pasó de 10 a 11 jugadores |
@@ -67,28 +67,27 @@ El listado por bloques controla la presentación local: el servicio existente re
 | Limpieza de los datos de prueba | Completada | Lectura final del servidor: 10 jugadores y documento temporal inexistente |
 | Integridad de los jugadores iniciales | Verificada | Fechas anteriores al alta temporal y comparación final de los datos con campos ordenados |
 
-Las pruebas manuales están respaldadas por las confirmaciones de Jacobo en el chat de desarrollo. Todavía no se han incorporado capturas a esta carpeta. La generación de paquetes se ha comprobado para las tres plataformas; la ejecución en un teléfono real se ha realizado en iPhone.
+Las pruebas manuales están respaldadas por las confirmaciones de Jacobo en el chat de desarrollo y por tres capturas de su iPhone 15 Pro Max, incorporadas el 19 de noviembre de 2026. Las imágenes muestran Inicio, el filtro Base y el final del listado. La generación de paquetes se ha comprobado para las tres plataformas; la ejecución en un teléfono real se ha realizado en iPhone.
 
 ## Comprobaciones y entrega pendientes
 
-- Recoger las capturas de Inicio en el iPhone: parte superior, final del listado y un filtro activo.
 - Verificar específicamente los estados sin resultados, plantilla vacía y pérdida de conexión. Están implementados, pero no se registran aquí como pruebas manuales completadas.
 - Revisar y probar la aplicación integrada cuando estén terminadas las pantallas de Marc y Carles.
 - Subir la rama, abrir la PR a `develop` y añadir el enlace en esta documentación.
 - Asociar la PR a la etiqueta `listado`, al Hito 2 y a la tarjeta P3.3 de Trello.
 - Revisión y fusión por Erick.
 
-### Capturas propuestas
+### Capturas del iPhone
 
-Guardar las imágenes reales dentro de `docs/parte-jacobo/capturas/` cuando estén disponibles:
+Imágenes proporcionadas por Jacobo de la aplicación ejecutándose en Expo Go en su iPhone 15 Pro Max. Se conservan los JPG originales sin recortes ni retoques.
 
-| Nombre propuesto | Qué debe mostrar | Estado |
-| --- | --- | --- |
-| `inicio-iphone.png` | Título, filtros y primeras tarjetas | Pendiente |
-| `final-listado-iphone.png` | Últimas tarjetas y contador final | Pendiente |
-| `filtro-posicion-iphone.png` | Posición seleccionada y tarjetas resultantes | Pendiente |
+| Captura | Evidencia visible |
+| --- | --- |
+| [Inicio con Todos](capturas/inicio-iphone.jpg) | Título «Nuestros jugadores», contador de 10 jugadores, filtro Todos seleccionado y primeras tarjetas con fotos, dorsales y estadísticas. |
+| [Final del listado](capturas/final-listado-iphone.jpg) | Últimos jugadores, «Mostrando 10 de 10 jugadores» y «Has visto toda la plantilla». |
+| [Filtro Base](capturas/filtro-posicion-iphone.jpg) | Base seleccionado, Stephen Curry y Chris Paul, y «Mostrando 2 de 2 jugadores». |
 
-Los nombres son una propuesta: estos archivos aún no existen.
+Estas capturas documentan el aspecto del listado y el filtro. Las pruebas de navegación y de cambios en tiempo real se acreditan mediante las confirmaciones manuales registradas en la tabla anterior.
 
 ## Historial de implementación
 
