@@ -3,7 +3,8 @@
 - **Autor de la aportación:** Jacobo Barrera Toba
 - **Equipo:** Front Stack Attack · EQUIPO BASKET
 - **Tarea:** P3.3 · Ventana Inicio y tarjetas de jugadores
-- **Rama:** `feature/jacobo-barrera` → PR a `develop`
+- **Rama:** `feature/jacobo-barrera` → `develop`
+- **Pull Request:** [#2 · Inicio con tarjetas, filtros y scroll por bloques](https://github.com/EricKColl/FP.451-Producto3/pull/2)
 - **Fecha de este registro:** 19 de noviembre de 2026
 - **Código comprobado:** `6509a9f`
 
@@ -99,8 +100,7 @@ Estas pruebas verifican decisiones de la pantalla con dependencias simuladas. El
 
 - Comprobar, durante las pruebas cruzadas del equipo, el aspecto nativo de los estados vacíos y la pérdida física de conexión. La lógica de respuesta a lecturas vacías y a errores simulados ya está comprobada; no se presenta como una prueba de desconexión real en el teléfono.
 - Revisar y probar la aplicación integrada cuando estén terminadas las pantallas de Marc y Carles.
-- Subir la rama, abrir la PR a `develop` y añadir el enlace en esta documentación.
-- Asociar la PR a la etiqueta `listado`, al Hito 2 y a la tarjeta P3.3 de Trello.
+- Añadir el enlace de la PR #2 a la tarjeta P3.3 de Trello. La PR ya tiene la etiqueta `listado` y el Hito 2.
 - Revisión y fusión por Erick.
 
 ### Capturas del iPhone
@@ -123,7 +123,7 @@ Estas capturas documentan el aspecto del listado y el filtro. Las pruebas de nav
 | `e8a41bb` | Cabecera y listado por bloques de seis |
 | `6509a9f` | Filtros por posición y estados vacíos |
 
-En el momento de redactar este documento, los tres commits de implementación están guardados localmente y la PR todavía no está abierta.
+Los commits de implementación, documentación, capturas y pruebas están publicados en `feature/jacobo-barrera`. La [PR #2](https://github.com/EricKColl/FP.451-Producto3/pull/2) está abierta hacia `develop`, con la etiqueta `listado`, el Hito 2 y revisión solicitada a `EricKColl`. La revisión y la fusión corresponden a Erick.
 
 ## Referencias
 
