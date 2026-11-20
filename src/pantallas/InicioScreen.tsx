@@ -10,6 +10,8 @@ import { colores, colorPosicion, fuentes, medidas } from '../tema/tema';
 
 const BLOQUE = 6;
 const POSICIONES: Posicion[] = ['Base', 'Escolta', 'Alero', 'Ala-pívot', 'Pívot'];
+// «1 jugador», «10 jugadores»
+const jugadoresTexto = (n: number) => `${n} ${n === 1 ? 'jugador' : 'jugadores'}`;
 
 // Ventana Inicio: tarjetas de Firebase, filtros por posición y listado por bloques.
 export function InicioScreen({ navigation }: PropsPantalla<'Inicio'>) {
@@ -75,7 +77,7 @@ export function InicioScreen({ navigation }: PropsPantalla<'Inicio'>) {
               <Text style={estilos.textoEstado}>
                 {error
                   ? 'No se ha podido actualizar Firebase'
-                  : `${jugadores.length} jugadores · desde Firebase`}
+                  : `${jugadoresTexto(jugadores.length)} · desde Firebase`}
               </Text>
             </View>
             {error ? (
@@ -83,10 +85,12 @@ export function InicioScreen({ navigation }: PropsPantalla<'Inicio'>) {
                 Mostrando la última plantilla recibida. Comprueba la conexión a internet.
               </Text>
             ) : null}
+            {/* Los filtros se anuncian como pestañas: el lector de pantalla dice cuál está elegida */}
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={estilos.filtros}
+              accessibilityRole="tablist"
             >
               {[null, ...POSICIONES].map((posicion) => {
                 const activo = filtro === posicion;
@@ -100,8 +104,8 @@ export function InicioScreen({ navigation }: PropsPantalla<'Inicio'>) {
                       activo && { borderColor: color, backgroundColor: `${color}26` },
                       pressed && estilos.pulsado,
                     ]}
-                    accessibilityRole="button"
-                    accessibilityState={{ selected: activo }}
+                    accessibilityRole="tab"
+                    aria-selected={activo}
                     accessibilityLabel={
                       posicion ? `Filtrar por ${posicion}` : 'Mostrar todos los jugadores'
                     }
@@ -135,7 +139,7 @@ export function InicioScreen({ navigation }: PropsPantalla<'Inicio'>) {
           filtrados.length > 0 ? (
             <View style={estilos.pie}>
               <Text style={estilos.textoPie} testID="progreso-listado">
-                Mostrando {mostrados.length} de {filtrados.length} jugadores
+                Mostrando {mostrados.length} de {jugadoresTexto(filtrados.length)}
               </Text>
               <Text style={estilos.textoPie}>
                 {quedanMas
