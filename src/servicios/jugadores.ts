@@ -58,10 +58,18 @@ export function escucharJugadores(
 ): () => void {
   return onSnapshot(
     consulta,
-    (instantanea) =>
+    (instantanea) => {
+      // Sin conexión, Firestore no da error: entrega lo que tiene guardado en el dispositivo
+      // (fromCache). Si no tiene nada, eso no significa que la plantilla esté vacía, sino que aún
+      // no se ha podido leer. La escucha sigue activa y, al volver la red, llegan los datos.
+      if (instantanea.metadata.fromCache && instantanea.empty) {
+        alFallar(new Error('Sin conexión con Firebase'));
+        return;
+      }
       alCambiar(
         instantanea.docs.map((d) => aJugador(d.id, d.data({ serverTimestamps: 'estimate' }))),
-      ),
+      );
+    },
     alFallar,
   );
 }
@@ -74,7 +82,15 @@ export function escucharJugador(
 ): () => void {
   return onSnapshot(
     doc(coleccion, id),
-    (d) => alCambiar(d.exists() ? aJugador(d.id, d.data({ serverTimestamps: 'estimate' })) : null),
+    (d) => {
+      // Igual que en la plantilla: sin conexión y sin copia guardada, «no existe» solo quiere
+      // decir que todavía no se ha podido leer.
+      if (d.metadata.fromCache && !d.exists()) {
+        alFallar(new Error('Sin conexión con Firebase'));
+        return;
+      }
+      alCambiar(d.exists() ? aJugador(d.id, d.data({ serverTimestamps: 'estimate' })) : null);
+    },
     alFallar,
   );
 }
