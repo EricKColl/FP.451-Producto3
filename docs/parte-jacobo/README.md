@@ -127,14 +127,14 @@ Los commits de implementación, documentación, capturas y pruebas están public
 
 ## Revisión de Erick
 
-Erick revisó la PR el 20 de noviembre de 2026 con una batería automática sobre la versión web, en un móvil simulado de 390 × 844 (cabecera, tarjetas, listado por bloques, cada filtro, navegación, foto que no carga, pantalla de 320 px y conexión cortada). Encontró dos cosas y las corrigió en esta misma rama:
+Erick revisó la PR el 20 de noviembre de 2026 con una batería automática sobre la versión web, en un móvil simulado de 390 × 844 (cabecera, tarjetas, listado por bloques, cada filtro, navegación, foto que no carga, móvil pequeño de 375 × 667, pantalla de 320 px y conexión cortada). Encontró dos cosas y las corrigió en esta misma rama:
 
 | Commit | Corrección |
 | --- | --- |
 | `fix(firebase)` | Sin conexión, Firestore no da error: entrega una lista vacía «de la caché». Inicio decía «0 jugadores» y «Todavía no hay jugadores en la plantilla». Ahora el servicio lo trata como un error de conexión: sale el aviso de conexión y, al volver la red, aparece la plantilla sin recargar. Lo mismo para un jugador (ficha y vídeo). |
 | `fix(listado)` | El filtro elegido no se anunciaba (`accessibilityState.selected` no llega a la web en un botón). Los filtros pasan a ser pestañas (`tablist` / `tab` con `aria-selected`), y el lector de pantalla dice cuál está seleccionada en el móvil y en la web. Además, «1 jugador» en singular. |
 
-Resultado: **45 de 45 pruebas correctas** (antes de las correcciones, 36 de 45). Las 6 pruebas de lógica de Jacobo siguen correctas y `npm run comprobar` no da errores.
+Resultado: **47 de 47 pruebas correctas** (antes de las correcciones, 38 de 47). Con los 10 jugadores actuales, en un móvil alto el segundo bloque llega enseguida, porque los 6 primeros no llenan la pantalla; en uno de 375 × 667 se ven primero 6 y el resto llega al bajar, como debe ser. Las 6 pruebas de lógica de Jacobo siguen correctas y `npm run comprobar` no da errores.
 
 ## Referencias
 
