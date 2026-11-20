@@ -71,7 +71,7 @@ El listado por bloques controla la presentación local: el servicio existente re
 | Error inicial y error de actualización con datos previos | Correctos en pruebas de lógica aisladas | Mensaje de error inicial y conservación de las tarjetas con aviso en una actualización fallida |
 | Filtro sobre toda la plantilla y reinicio del bloque | Correctos en pruebas de lógica aisladas | Datos sintéticos de 15 jugadores y cambio de posición tras ampliar el listado |
 
-Las pruebas manuales están respaldadas por las confirmaciones de Jacobo en el chat de desarrollo y por tres capturas de su iPhone 15 Pro Max, incorporadas el 19 de noviembre de 2026. Las imágenes muestran Inicio, el filtro Base y el final del listado. La generación de paquetes se ha comprobado para las tres plataformas; la ejecución en un teléfono real se ha realizado en iPhone.
+Las pruebas manuales están respaldadas por las comprobaciones de Jacobo en su iPhone y por tres capturas de su iPhone 15 Pro Max, incorporadas el 19 de noviembre de 2026. Las imágenes muestran Inicio, el filtro Base y el final del listado. La generación de paquetes se ha comprobado para las tres plataformas; la ejecución en un teléfono real se ha realizado en iPhone.
 
 ## Pruebas de lógica reproducibles
 
@@ -101,7 +101,7 @@ Estas pruebas verifican decisiones de la pantalla con dependencias simuladas. El
 - Comprobar, durante las pruebas cruzadas del equipo, el aspecto nativo de los estados vacíos y la pérdida física de conexión. La lógica de respuesta a lecturas vacías y a errores simulados ya está comprobada; no se presenta como una prueba de desconexión real en el teléfono.
 - Revisar y probar la aplicación integrada cuando estén terminadas las pantallas de Marc y Carles.
 - Añadir el enlace de la PR #2 a la tarjeta P3.3 de Trello. La PR ya tiene la etiqueta `listado` y el Hito 2.
-- Revisión y fusión por Erick.
+- Fusión por Erick.
 
 ### Capturas del iPhone
 
@@ -124,6 +124,17 @@ Estas capturas documentan el aspecto del listado y el filtro. Las pruebas de nav
 | `6509a9f` | Filtros por posición y estados vacíos |
 
 Los commits de implementación, documentación, capturas y pruebas están publicados en `feature/jacobo-barrera`. La [PR #2](https://github.com/EricKColl/FP.451-Producto3/pull/2) está abierta hacia `develop`, con la etiqueta `listado`, el Hito 2 y revisión solicitada a `EricKColl`. La revisión y la fusión corresponden a Erick.
+
+## Revisión de Erick
+
+Erick revisó la PR el 20 de noviembre de 2026 con una batería automática sobre la versión web, en un móvil simulado de 390 × 844 (cabecera, tarjetas, listado por bloques, cada filtro, navegación, foto que no carga, pantalla de 320 px y conexión cortada). Encontró dos cosas y las corrigió en esta misma rama:
+
+| Commit | Corrección |
+| --- | --- |
+| `fix(firebase)` | Sin conexión, Firestore no da error: entrega una lista vacía «de la caché». Inicio decía «0 jugadores» y «Todavía no hay jugadores en la plantilla». Ahora el servicio lo trata como un error de conexión: sale el aviso de conexión y, al volver la red, aparece la plantilla sin recargar. Lo mismo para un jugador (ficha y vídeo). |
+| `fix(listado)` | El filtro elegido no se anunciaba (`accessibilityState.selected` no llega a la web en un botón). Los filtros pasan a ser pestañas (`tablist` / `tab` con `aria-selected`), y el lector de pantalla dice cuál está seleccionada en el móvil y en la web. Además, «1 jugador» en singular. |
+
+Resultado: **45 de 45 pruebas correctas** (antes de las correcciones, 36 de 45). Las 6 pruebas de lógica de Jacobo siguen correctas y `npm run comprobar` no da errores.
 
 ## Referencias
 
