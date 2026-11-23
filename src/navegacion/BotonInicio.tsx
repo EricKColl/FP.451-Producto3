@@ -27,9 +27,9 @@ const estilos = StyleSheet.create({
   boton: {
     // En la web la cabecera no deja margen a la derecha; en Android e iOS ya lo pone el Stack
     marginRight: Platform.OS === 'web' ? 12 : 0,
-    width: 40,
-    height: 40,
-    minWidth: medidas.toque - 4,
+    // 44 × 44: el tamaño mínimo recomendado para un botón táctil
+    width: medidas.toque,
+    height: medidas.toque,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 12,
