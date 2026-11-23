@@ -39,3 +39,7 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Documentación de entrega (Word, capturas y generador; se entrega aparte)
+/documentacion/
+/producto3(FP.451)_*.pdf
