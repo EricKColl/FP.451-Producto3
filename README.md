@@ -12,6 +12,15 @@ Tiene tres ventanas, unidas con un Stack de navegación:
 
 El menú superior tiene el título de cada ventana, la flecha para volver atrás y un botón **Inicio** que vuelve al listado.
 
+## Proyecto online
+
+Se puede abrir sin instalar nada en **StackBlitz**, que instala las dependencias y arranca la versión web de Expo (tarda un par de minutos la primera vez):
+
+- **Versión entregada (`main`):** https://stackblitz.com/~/github.com/EricKColl/FP.451-Producto3/tree/main
+- **Integración del equipo (`develop`):** https://stackblitz.com/~/github.com/EricKColl/FP.451-Producto3/tree/develop
+
+Se usa StackBlitz en lugar de CodeSandbox, como en los Productos 1 y 2 y con el visto bueno del consultor: CodeSandbox no tiene plan gratuito para React Native y Expo Snack solo llega a la versión 55 de Expo.
+
 ## Equipo · Front Stack Attack
 
 | Persona | Integrante | Parte | Rama |
