@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEvent, useEventListener } from 'expo';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -15,11 +15,14 @@ import {
 import { EstadoPantalla } from '../componentes/comunes/EstadoPantalla';
 import { Fondo } from '../componentes/comunes/Fondo';
 import { useJugador } from '../hooks/useJugadores';
+import type { Jugador } from '../modelos/jugador';
 import type { PropsPantalla } from '../navegacion/tipos';
-import { colores, fuentes, medidas } from '../tema/tema';
+import { colores, colorPosicion, fuentes, medidas } from '../tema/tema';
 
 const velocidades = [0.5, 1, 1.5, 2];
 const salto = 10;
+// Decimales con coma, como en el resto de la aplicación (1,5×)
+const coma = (numero: number) => String(numero).replace('.', ',');
 
 export function MultimediaScreen({ route, navigation }: PropsPantalla<'Multimedia'>) {
   const { id } = route.params;
@@ -53,18 +56,29 @@ export function MultimediaScreen({ route, navigation }: PropsPantalla<'Multimedi
               ? 'Este jugador todavía no tiene vídeo.'
               : 'El jugador ya no está en la plantilla.'
           }
+          accion={{ texto: 'Volver al listado', alPulsar: () => navigation.popTo('Inicio') }}
         />
       </Fondo>
     );
 
   return (
     <Fondo>
-      <Reproductor key={url} url={url} nombre={nombre} />
+      <Reproductor key={url} url={url} nombre={nombre}>
+        <InfoJugador jugador={jugador} alVerFicha={() => navigation.popTo('Detalle', { id })} />
+      </Reproductor>
     </Fondo>
   );
 }
 
-function Reproductor({ url, nombre }: { url: string; nombre: string }) {
+function Reproductor({
+  url,
+  nombre,
+  children,
+}: {
+  url: string;
+  nombre: string;
+  children?: ReactNode;
+}) {
   const vista = useRef<VideoView>(null);
   const terminado = useRef(false);
   const [anchoBarra, setAnchoBarra] = useState(0);
@@ -100,6 +114,7 @@ function Reproductor({ url, nombre }: { url: string; nombre: string }) {
   const puedeBuscar = listo && duracion > 0;
 
   function irA(segundos: number) {
+    if (!Number.isFinite(segundos)) return;
     terminado.current = false;
     player.currentTime = Math.max(0, Math.min(duracion, segundos));
   }
@@ -182,7 +197,11 @@ function Reproductor({ url, nombre }: { url: string; nombre: string }) {
             disabled={!puedeBuscar}
             onLayout={({ nativeEvent }) => setAnchoBarra(nativeEvent.layout.width)}
             onPress={({ nativeEvent }) => {
-              if (anchoBarra > 0) irA((nativeEvent.locationX / anchoBarra) * duracion);
+              // En Android e iOS llega locationX; en la web, offsetX (los dos, dentro de la barra)
+              const x = Number.isFinite(nativeEvent.locationX)
+                ? nativeEvent.locationX
+                : (nativeEvent as unknown as { offsetX?: number }).offsetX;
+              if (anchoBarra > 0 && x !== undefined) irA((x / anchoBarra) * duracion);
             }}
             accessible
             accessibilityRole="adjustable"
@@ -253,8 +272,8 @@ function Reproductor({ url, nombre }: { url: string; nombre: string }) {
           />
           <Control
             icono="speedometer-outline"
-            texto={`${playbackRate}×`}
-            etiqueta={`Velocidad de reproducción: ${playbackRate} veces`}
+            texto={`${coma(playbackRate)}×`}
+            etiqueta={`Velocidad de reproducción: ${coma(playbackRate)}×`}
             accion={cambiarVelocidad}
             desactivado={!listo}
           />
@@ -271,7 +290,34 @@ function Reproductor({ url, nombre }: { url: string; nombre: string }) {
           </Text>
         )}
       </View>
+      {children}
     </ScrollView>
+  );
+}
+
+// Debajo del vídeo, como en el mockup: posición, dorsal, descripción y acceso a la ficha
+function InfoJugador({ jugador, alVerFicha }: { jugador: Jugador; alVerFicha: () => void }) {
+  const color = colorPosicion[jugador.posicion] ?? colores.cian;
+  return (
+    <View style={[estilos.caja, estilos.info]}>
+      <Text style={[estilos.posicion, { color }]}>
+        {jugador.posicion.toUpperCase()} · #{jugador.dorsal}
+      </Text>
+      {jugador.descripcion ? (
+        <Text style={estilos.descripcion} numberOfLines={4}>
+          {jugador.descripcion}
+        </Text>
+      ) : null}
+      <Pressable
+        onPress={alVerFicha}
+        style={({ pressed }) => [estilos.enlace, pressed && estilos.controlAtenuado]}
+        accessibilityRole="button"
+        accessibilityLabel={`Ver la ficha completa de ${jugador.nombre} ${jugador.apellidos}`}
+      >
+        <Ionicons name="id-card-outline" size={18} color={colores.cian} />
+        <Text style={estilos.textoEnlace}>Ver la ficha completa</Text>
+      </Pressable>
+    </View>
   );
 }
 
@@ -371,4 +417,15 @@ const estilos = StyleSheet.create({
   },
   etiquetaPrincipal: { color: colores.fondo0 },
   aviso: { color: colores.rojo, fontFamily: fuentes.texto, fontSize: 14 },
+  info: { marginTop: medidas.hueco, gap: 8 },
+  posicion: { fontFamily: fuentes.datos, fontSize: 12, letterSpacing: 1.5 },
+  descripcion: { color: colores.texto2, fontFamily: fuentes.texto, fontSize: 14, lineHeight: 21 },
+  enlace: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 8,
+    minHeight: medidas.toque,
+  },
+  textoEnlace: { color: colores.cian, fontFamily: fuentes.tituloMedio, fontSize: 15 },
 });
